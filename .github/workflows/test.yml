@@ -24,18 +24,19 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
+        push: true
         context: .
-        file: Dockerfile
-        #push: ${{ github.ref_type == 'tag' }}
+        file: Dockerfile        
         tags: "alorenzoniboom/poc-nest:latest"
         #labels: ${{ steps.meta.outputs.labels }}
+        #push: ${{ github.ref_type == 'tag' }}
 
-    #- name: Configure AWS credentials
-    #  uses: aws-actions/configure-aws-credentials@v1
-    #  with:
-    #    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #    aws-region: eu-west-1
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-1
 
     #- name: Deploy to Amazon ECS
     #  uses: aws-actions/amazon-ecs-deploy-task-definition@v1
