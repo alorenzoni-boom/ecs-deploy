@@ -1,5 +1,5 @@
 {
-  "executionRoleArn": "arn:aws:iam::343378072322:role/test-fargateTaskExecutionRole",
+  "executionRoleArn": "",
   "containerDefinitions": [
     {
       "name": "test-fargate-container-staging",
