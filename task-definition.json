@@ -1,0 +1,22 @@
+{
+  "executionRoleArn": "arn:aws:iam::343378072322:role/test-fargateTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "test-fargate-container-staging",
+      "image": "nginx:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "protocol": "tcp",
+          "containerPort": 3000
+        }
+      ]
+    }
+  ],
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "cpu": "256",
+  "memory": "512",
+  "family": "test-fargate-task-staging"
+}
