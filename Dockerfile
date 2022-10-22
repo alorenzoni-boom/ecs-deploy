@@ -4,6 +4,6 @@ WORKDIR /home/node/app
 ADD node_modules /home/node/app/node_modules
 ADD dist /home/node/app/dist
 
-EXPOSE 3000
+EXPOSE 80
 
 ENTRYPOINT [ "node","dist/main"]
