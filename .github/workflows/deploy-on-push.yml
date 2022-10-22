@@ -10,9 +10,10 @@ jobs:
     
     - name: Version
       id: version
-      run: echo ::set-output name=version::$(jq -r '.version' package.json)
+      #run: echo ::set-output name=version::$(jq -r '.version' package.json)
+      run: echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
 
-    - run: echo "${{ steps.vars.version.version }}"
+    - run: echo "${{ steps.version.outputs.VERSION }}"
 
     #- name: SetUp nodejs version
     #  uses: actions/setup-node@v3
