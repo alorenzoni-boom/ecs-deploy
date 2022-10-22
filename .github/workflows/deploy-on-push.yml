@@ -8,7 +8,11 @@ jobs:
     - name: Code checkout
       uses: actions/checkout@v3
     
-    - run: jq '.version' package.json
+    - name: Version
+      id: version
+      run: echo ::set-output name=version::$(jq -r '.version' package.json)
+
+    - run: echo ${{ steps.vars.version.version }}
 
     #- name: SetUp nodejs version
     #  uses: actions/setup-node@v3
