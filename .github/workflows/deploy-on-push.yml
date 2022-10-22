@@ -20,7 +20,6 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-
     
     - name: Get package version
       id: version
@@ -32,30 +31,27 @@ jobs:
         push: true
         context: .
         file: Dockerfile        
-        tags: "alorenzoniboom/${{ steps.version.outputs.VERSION }}"
+        tags: "alorenzoniboom/poc-nest:${{ steps.version.outputs.VERSION }}"
 
-    #- name: Configure AWS credentials
-    #  uses: aws-actions/configure-aws-credentials@v1
-    #  with:
-    #    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #    aws-region: eu-west-1
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-1
 
-    #- name: Fill in the new image ID in the Amazon ECS task definition
-    #  id: task-definition
-    #  uses: aws-actions/amazon-ecs-render-task-definition@v1
-    #  with:
-    #    task-definition: infra/task-definition.json
-    #    container-name: test-fargate-container-staging
-    #    image: "alorenzoniboom/poc-nest:latest"
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-definition
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: infra/task-definition.json
+        container-name: test-fargate-container-staging
+        image: "alorenzoniboom/poc-nest:${{ steps.version.outputs.VERSION }}"
 
-    #- name: Deploy to Amazon ECS
-    #  uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-    #  with:        
-    #    task-definition: ${{ steps.task-definition.outputs.task-definition }}
-    #    cluster: test-fargate-cluster-staging
-    #    service: test-fargate-service-staging
-    #    wait-for-service-stability: true
-        #codedeploy-appspec: appspec.yaml
-        #codedeploy-application: ecs-blue-green-deploy
-        #codedeploy-deployment-group: production        
+    - name: Deploy to Amazon ECS
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:        
+        task-definition: ${{ steps.task-definition.outputs.task-definition }}
+        cluster: test-fargate-cluster-staging
+        service: test-fargate-service-staging
+        wait-for-service-stability: true        
